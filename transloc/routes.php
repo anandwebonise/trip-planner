@@ -1,6 +1,5 @@
 <?php
 include_once('curl.php');
-//echo "api.transloc.com/1.1/routes.json?agencies=".$_GET['agency_id']."";
 
 $agencyId = $_GET['agency_id'];
 
@@ -9,15 +8,16 @@ $curl = new CURLCalls();
 $curlRoutesUrl = "api.transloc.com/1.1/routes.json?agencies=".$agencyId."";
 
 $routes = $curl->getResponse($curlRoutesUrl);
+
 $ttaRoutes = $routes->data->{$agencyId};
 
 //$curlStopsUrl = "api.transloc.com/1.1/routes.json?agencies=".$agencyId."";
 //
 //$stops = $curl->getResponse($curlStopsUrl);
-////
-//echo '<pre> object is======';
-//print_r($routes->data->{$agencyId});
-//echo '</pre>';
+//
+echo '<pre> object is======';
+print_r($ttaRoutes);
+echo '</pre>';
 /**
  * show the list of agencies
  */
@@ -30,6 +30,7 @@ $ttaRoutes = $routes->data->{$agencyId};
     if (isset($ttaRoutes) && !empty($ttaRoutes)) {
 
         foreach ($ttaRoutes as $route) {
+
             ?>
             <tr>
                 <td>Route Id : <?php echo $route->route_id;?></td>
