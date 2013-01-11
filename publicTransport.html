@@ -206,17 +206,6 @@
         }
     }
 
-    /*function addDepart() {
-     var depart = document.getElementById('depart');
-     for (var i = 0; i < 12; i++) {
-     for (var j = 0; j < 60; j += 5) {
-     var x = i < 10 ? '0' + i : i;
-     var y = j < 10 ? '0' + j : j;
-     depart.innerHTML += '<option>' + x + ':' + y + '</option>';
-     }
-     }
-     }*/
-
     function formatAMPM() {
         var date = new Date();
         var hours = document.getElementById('departHr').value;
@@ -242,7 +231,6 @@
 
         var time = ($('#travelDate').val() != '') ? new Date($('#travelDate').val()) : new Date();
 
-        console.log(time);
         time.setHours(bits[0]);
         time.setMinutes(bits[1]);
 
@@ -254,16 +242,29 @@
 
         var departureTime = time;
 
-        var request = {
-            origin:startLocation,
-            destination:endLocation,
-            travelMode:google.maps.TravelMode[selectedMode],
-            provideRouteAlternatives:true,
-            transitOptions:{
-                departureTime:departureTime
+        if(document.getElementById("departureRadio").checked){
+            var request = {
+                origin:startLocation,
+                destination:endLocation,
+                travelMode:google.maps.TravelMode[selectedMode],
+                provideRouteAlternatives:true,
+                transitOptions:{
+                    departureTime:departureTime
+                }
+            };
+        } else {
 
-            }
-        };
+            var request = {
+                origin:startLocation,
+                destination:endLocation,
+                travelMode:google.maps.TravelMode[selectedMode],
+                provideRouteAlternatives:true,
+                transitOptions:{
+                    arrivalTime:departureTime
+                }
+            };
+        }
+
 
         var panel = document.getElementById('panel');
         panel.innerHTML = '';
@@ -309,9 +310,9 @@
             &nbsp;<input class="input" id="to" value="Durham Chapel Hill Blvd at Fosters, Durham, NC">
         </div>
         <div>
-            <input type="radio" name="arrive" value="false" checked="checked">
+            <input type="radio" name="arrive" value="false" checked="checked" id="departureRadio">
             <label>Depart After</label>
-            <input type="radio" name="arrive" value="true">
+            <input type="radio" name="arrive" value="true" id="arrivalRadio">
             <label>Arrive Before</label>
         </div>
         <div>
