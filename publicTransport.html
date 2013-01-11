@@ -249,7 +249,7 @@
                 travelMode:google.maps.TravelMode[selectedMode],
                 provideRouteAlternatives:true,
                 transitOptions:{
-                    departureTime:departureTime
+                    arrivalTime:departureTime
                 }
             };
         } else {
@@ -260,7 +260,7 @@
                 travelMode:google.maps.TravelMode[selectedMode],
                 provideRouteAlternatives:true,
                 transitOptions:{
-                    arrivalTime:departureTime
+                    departureTime:departureTime
                 }
             };
         }
@@ -310,7 +310,7 @@
             &nbsp;<input class="input" id="to" value="Durham Chapel Hill Blvd at Fosters, Durham, NC">
         </div>
         <div>
-            <input type="radio" name="arrive" value="false" checked="checked" id="departureRadio">
+            <input type="radio" name="arrive" value="false" id="departureRadio">
             <label>Depart After</label>
             <input type="radio" name="arrive" value="true" id="arrivalRadio">
             <label>Arrive Before</label>
