@@ -4,18 +4,18 @@
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 <meta content="utf-8" http-equiv="encoding">
 <title>Google Maps JavaScript API v3 Example: Transit</title>
-<link href="jquery-ui-1.9.2.custom.min.css" media="screen" rel="Stylesheet" type="text/css" />
+<link href="jquery-ui-1.9.2.custom.min.css" media="screen" rel="Stylesheet" type="text/css"/>
 <script src="jquery-1.8.2.min.js" type="text/javascript"></script>
 <script src="jquery-ui-1.9.2.custom.min.js" type="text/javascript"></script>
-<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places" type="text/javascript"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
-        $("#travelDate" ).datepicker({
-            showOn: "button",
-            buttonImage: "images/calendar.gif",
-            buttonImageOnly: true,
+    $(document).ready(function () {
+        $("#travelDate").datepicker({
+            showOn:"button",
+            buttonImage:"images/calendar.gif",
+            buttonImageOnly:true,
             dateFormat:'yy-mm-dd',
-            minDate : new Date()
+            minDate:new Date()
         });
     });
 </script>
@@ -140,7 +140,18 @@
 
 </style>
 
+<?php
+date_default_timezone_set('America/New_York');
+//Thu Jan 17 2013 19:13:45 GMT+0530
+$today = date('Y-m-d');//show it in textbox
+
+?>
+
 <script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#travelDate').val('<?php echo $today;?>');
+    });
 
     var directions = new google.maps.DirectionsService();
     var renderer = new google.maps.DirectionsRenderer();
@@ -161,8 +172,8 @@
 
 
         var defaultBounds = new google.maps.LatLngBounds(
-                new google.maps.LatLng(35.371359, -79.319916),
-                new google.maps.LatLng(36.231424, -77.752991));
+            new google.maps.LatLng(35.371359, -79.319916),
+            new google.maps.LatLng(36.231424, -77.752991));
 
 
         var autocompleteOptions = {
@@ -191,7 +202,7 @@
     function addDepart() {
         var departHr = document.getElementById('departHr');
         var departMin = document.getElementById('departMin');
-        for (var hr = 1; hr < 12; hr++) {
+        for (var hr = 1; hr <= 12; hr++) {
             departHr.innerHTML += '<option value = "'+hr+'">' + hr + '</option>';
         }
 
@@ -205,17 +216,14 @@
     }
 
     function formatAMPM() {
-        var date = new Date();
         var hours = document.getElementById('departHr').value;
-        var minutes =  document.getElementById('departMin').value;
-        var ampm =  document.getElementById('timeFormat').value;
-        /*hours = hours % 12;
+        var minutes = document.getElementById('departMin').value;
 
-         hours = hours ? hours : 12; // the hour '0' should be '12'
-         minutes = minutes < 10 ? '0' + minutes : minutes;*/
-
-        if(ampm == 'pm'){
-            hours = 12 + parseInt(hours);        }
+        if (document.getElementById('timeFormat').value == 'pm') {
+            hours = 12 + parseInt(hours);
+        }
+        console.log('hours ==== ' + hours);
+        console.log('minutes ==== ' + minutes);
         var strTime = hours + ':' + minutes;
         return strTime;
     }
@@ -224,66 +232,65 @@
         var startLocation = document.getElementById('from').value;
         var endLocation = document.getElementById('to').value;
         var selectedMode = document.getElementById('modeOfTransportation').value;
-        var departure = formatAMPM();
-        var bits = departure.split(':');
-        var now = new Date();
-        var tzOffset = (now.getTimezoneOffset() + 60) * 60 * 1000;
+        var timeChosen = formatAMPM();
 
-        var time = ($('#travelDate').val() != '') ? new Date($('#travelDate').val()) : new Date();
+        //create date format
+       // var dateIs = createDate(document.getElementById('travelDate').value, timeChosen);
+        $.ajax({
+            url:'date.php',
+            type:'POST',
+            data:{'date':document.getElementById('travelDate').value, 'time':timeChosen},
+            success:function(data){
+                var dateIs = data;
+                console.log('return by ajax==='+dateIs);
 
-        time.setHours(bits[0]);
-        time.setMinutes(bits[1]);
+                var finalDate = new Date(dateIs);
 
-        var ms = time.getTime() - tzOffset;
+                console.log('date sdsd ====' + finalDate);
 
-        /*if (ms < now.getTime()) {
-         ms += 24 * 60 * 60 * 1000;
-         }*/
-
-        var departureTime = time;
-
-
-        /*if(document.getElementById("departureRadio").checked){
-
-            var request = {
-                origin:startLocation,
-                destination:endLocation,
-                travelMode:google.maps.TravelMode[selectedMode],
-                provideRouteAlternatives:true,
-                transitOptions:{
-                    departureTime:departureTime
+                if (document.getElementById("arrivalRadio").checked) {
+                    console.log('in the arrivalRadio');
+                    var request = {
+                        origin:startLocation,
+                        destination:endLocation,
+                        travelMode:google.maps.TravelMode[selectedMode],
+                        provideRouteAlternatives:true,
+                        transitOptions:{
+                            arrivalTime:finalDate
+                        }
+                    };
+                } else {
+                    console.log('in the departure');
+                    var request = {
+                        origin:startLocation,
+                        destination:endLocation,
+                        travelMode:google.maps.TravelMode[selectedMode],
+                        provideRouteAlternatives:true,
+                        transitOptions:{
+                            departureTime:finalDate
+                        }
+                    };
                 }
-            };
-        } else {*/
 
-            var request = {
-                origin:startLocation,
-                destination:endLocation,
-                travelMode:google.maps.TravelMode[selectedMode],
-                provideRouteAlternatives:true,
-                transitOptions:{
-                    arrivalTime:departureTime
-                }
-            };
-        //}
-
-        console.log(request);
-        var panel = document.getElementById('panel');
-        panel.innerHTML = '';
-        directions.route(request, function (response, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                renderer.setDirections(response);
-                renderer.setMap(map);
-                renderer.setPanel(panel);
-                console.log(status);
-            } else {
-                renderer.setPanel(null);
-                alert(status);
+                var panel = document.getElementById('panel');
+                panel.innerHTML = '';
+                directions.route(request, function (response, status) {
+                    if (status == google.maps.DirectionsStatus.OK) {
+                        renderer.setDirections(response);
+                        renderer.setMap(map);
+                        renderer.setPanel(panel);
+                    } else {
+                        renderer.setPanel(null);
+                        //alert(status);
+                    }
+                });
             }
         });
 
     }
     google.maps.event.addDomListener(window, 'load', initialize);
+
+
 
 </script>
 </head>
@@ -313,7 +320,7 @@
             &nbsp;<input class="input" id="to" value="Durham Chapel Hill Blvd at Fosters, Durham, NC">
         </div>
         <div>
-            <input type="radio" name="arrive" value="false" id="departureRadio">
+            <input type="radio" name="arrive" value="false" id="departureRadio" checked="checked">
             <label>Depart After</label>
             <input type="radio" name="arrive" value="true" id="arrivalRadio">
             <label>Arrive Before</label>
@@ -323,7 +330,8 @@
             <input type="text" name="date" id="travelDate" style="width: 100px">
 
         </div>
-        <div><label>Timing</label>&nbsp;<select id="departHr"></select>&nbsp;<select id="departMin"></select>&nbsp;<select id="timeFormat">
+        <div><label>Timing</label>&nbsp;<select id="departHr"></select>&nbsp;<select
+            id="departMin"></select>&nbsp;<select id="timeFormat">
             <option value="pm">PM</option>
             <option value="am">AM</option>
         </select></div>
@@ -335,5 +343,3 @@
 </div>
 </body>
 </html>
-
-
