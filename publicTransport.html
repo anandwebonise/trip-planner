@@ -142,8 +142,6 @@
 
 <script type="text/javascript">
 
-
-
     var directions = new google.maps.DirectionsService();
     var renderer = new google.maps.DirectionsRenderer();
     var startLocationAutocomplete;
@@ -193,7 +191,7 @@
     function addDepart() {
         var departHr = document.getElementById('departHr');
         var departMin = document.getElementById('departMin');
-        for (var hr = 1; hr <= 12; hr++) {
+        for (var hr = 1; hr < 12; hr++) {
             departHr.innerHTML += '<option value = "'+hr+'">' + hr + '</option>';
         }
 
@@ -214,9 +212,10 @@
         /*hours = hours % 12;
         hours = hours ? hours : 12; // the hour '0' should be '12'
         minutes = minutes < 10 ? '0' + minutes : minutes;*/
+        console.log(hours);
         if(ampm == 'pm'){
             hours = 12 + parseInt(hours);        }
-        var strTime = hours + ':' + minutes ;
+        var strTime = hours + ':' + minutes;
         return strTime;
     }
 
@@ -242,17 +241,17 @@
 
         var departureTime = time;
 
-        if(document.getElementById("departureRadio").checked){
+        /*if(document.getElementById("departureRadio").checked){
             var request = {
                 origin:startLocation,
                 destination:endLocation,
                 travelMode:google.maps.TravelMode[selectedMode],
                 provideRouteAlternatives:true,
                 transitOptions:{
-                    arrivalTime:departureTime
+                    departureTime:departureTime
                 }
             };
-        } else {
+        } else {*/
 
             var request = {
                 origin:startLocation,
@@ -263,9 +262,9 @@
                     departureTime:departureTime
                 }
             };
-        }
+        //}
 
-
+        console.log(request);
         var panel = document.getElementById('panel');
         panel.innerHTML = '';
         directions.route(request, function (response, status) {
@@ -273,9 +272,10 @@
                 renderer.setDirections(response);
                 renderer.setMap(map);
                 renderer.setPanel(panel);
+                console.log(status);
             } else {
                 renderer.setPanel(null);
-                //alert(status);
+                alert(status);
             }
         });
 
@@ -332,3 +332,5 @@
 </div>
 </body>
 </html>
+
+
