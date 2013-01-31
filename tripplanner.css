@@ -1,0 +1,185 @@
+html, body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    color: black;
+    font-family: arial,sans-serif;
+    font-size: 13px;
+}
+
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 50%;
+    height: 450px;
+}
+
+#panel-wpr {
+    margin-left: 10px;
+    padding-bottom: 20px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    right: 0;
+    /*overflow: auto;*/
+}
+
+#panel {
+    font-family: arial;
+    padding: 0 5px;
+
+}
+
+#info {
+    padding: 5px;
+}
+
+
+
+.adp-directions {
+    width: 100%;
+}
+
+.input {
+    background-color: white;
+    padding-left: 8px;
+    border: 1px solid #D9D9D9;
+    border-top: 1px solid silver;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
+}
+
+.time {
+    margin: 0;
+    height: 17px;
+    border: 1px solid;
+    border-top-color: #CCC;
+    border-right-color: #999;
+    border-left-color: #999;
+    border-bottom-color: #CCC;
+    padding: 2px 15px 1px 1px;
+}
+
+button {
+    border: 1px solid #3079ED;
+    color: white;
+    background-color: #4D90FE;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#4D90FE),to(#4787ED));
+    background-image: -webkit-linear-gradient(top,#4D90FE,#4787ED);
+    background-image: -moz-linear-gradient(top, #4D90FE,#4787ED);
+    background-image: -ms-linear-gradient(top,#4D90FE,#4787ED);
+    background-image: -o-linear-gradient(top,#4D90FE,#4787ED);
+    background-image: linear-gradient(top,#4D90FE, #4787ED);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#4d90fe',EndColorStr='#4787ed');
+    display: inline-block;
+    min-width: 54px;
+    text-align: center;
+    font-weight: bold;
+    padding: 0 8px;
+    line-height: 27px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-transition: all 0.218s;
+    -moz-transition: all 0.218s;
+    -o-transition: all 0.218s;
+    transition: all 0.218s;
+}
+
+#info div {
+    line-height: 22px;
+    font-size: 110%;
+}
+
+.btn {
+}
+
+#panel-wpr {
+    width : 500px;
+}
+
+#info {
+    border-bottom: 1px solid #E6E6E6;
+    margin-bottom: 5px;
+}
+
+h2 {
+    margin: 0;
+    padding: 0;
+}
+.wrpContent{
+    position: relative;
+}
+.wrpContent h2{
+    margin: 0 0 5px;
+    padding: 0;
+}
+.wrpContent label{
+    display: inline;
+}
+.wrpContent .input {
+    float: right;
+    width: 85%;
+    font-size: 12px;
+    height: 20px;
+}
+.startEndCnt, .departArriveCnt, .travelDateCnt, .timingCnt {
+    margin-bottom: 10px;
+}
+
+.departArriveCnt {
+    margin-left: 40px;
+}
+.departArriveCnt input[type="radio"] {
+    margin: 2px 5px 0 0;
+    vertical-align: text-top;
+}
+.departArriveCnt label{
+    margin-right: 10px;
+}
+.travelDateCnt label{
+    margin-right: 10px;
+}
+.travelDateCnt input{
+    margin-right: 5px;
+    width: 75px;
+    height: 18px;
+    background: #fff;
+    border: 1px solid #dddddd;
+}
+.timingCnt select{
+    margin-left: 6px;
+}
+.getDirCnt{
+    margin-bottom: 15px;
+}
+.getDirCnt button{
+    height: 35px;
+}
+#transit-wpr button {
+    margin-top: 5px;
+    height: 35px;
+}
+
+#map img { max-width:none; }
+
+#loader {
+    position: absolute;
+    display: none;
+}
+
+#favoriteTrip {
+    display: none;
+}
+
+.adp-step, .adp-text {
+    width: 90%;
+}
+
+#go {
+   margin-top: 10px;
+}
